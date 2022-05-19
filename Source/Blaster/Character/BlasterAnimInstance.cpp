@@ -4,6 +4,7 @@
 #include "BlasterAnimInstance.h"
 #include "BlasterCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UBlasterAnimInstance::NativeInitializeAnimation()
 {
@@ -29,4 +30,19 @@ void UBlasterAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	bIsAccelerating = BlasterCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0.f ? true : false;
 	bWeaponEquipped = BlasterCharacter->IsWeaponEquiped();
 	bIsCrouched = BlasterCharacter->bIsCrouched;
+	bAiming = BlasterCharacter->IsAiming();
+
+	// Offset Yaw for strafing
+	FRotator AimRotation = BlasterCharacter->GetBaseAimRotation();
+	FRotator MovementRotation = UKismetMathLibrary::MakeRotFromX(BlasterCharacter->GetVelocity());
+	FRotator DeltaRot = UKismetMathLibrary::NormalizedDeltaRotator(MovementRotation, AimRotation);
+	DeltaRotation = FMath::RInterpTo(DeltaRotation, DeltaRot, DeltaTime, 6.f);
+	YawOffset = DeltaRotation.Yaw;
+
+	CharacterRotationLastFrame = CharacterRotation;
+	CharacterRotation = BlasterCharacter->GetActorRotation();
+	const FRotator Delta = UKismetMathLibrary::NormalizedDeltaRotator(CharacterRotation, CharacterRotationLastFrame);
+	const float Target = Delta.Yaw / DeltaTime;
+	const float Interp = FMath::FInterpTo(Lean, Target, DeltaTime, 6.f);
+	Lean = FMath::Clamp(Interp, -90.f, 90.f);
 }

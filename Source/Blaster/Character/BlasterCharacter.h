@@ -27,6 +27,8 @@ protected:
 	void LookUp(float Value);
 	void EquipButtonPressed();
 	void CrouchButtonPressed();
+	void AimButtonPressed();
+	void AimButtonReleased();
 
 private:
 	// Add spring arm and camera
@@ -57,7 +59,10 @@ public:
 	// Interact with overlapped weapon
 	void SetOverlappingWeapon(AWeapon* Weapon);
 
-	// Check if weapon is equipped for animation bluprints
+	// Check if weapon is equipped for animation blueprints
 	bool IsWeaponEquiped();
+
+	// Check if is aiming for animation blueprints
+	bool IsAiming();
 	
 };

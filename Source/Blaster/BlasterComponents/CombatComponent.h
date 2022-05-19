@@ -21,14 +21,25 @@ public:
 	void EquipWeapon(class AWeapon* WeaponToEquip);
 protected:	
 	virtual void BeginPlay() override;
+	void SetAiming(bool bIsAiming);
+
+	// Aiming RPC
+	UFUNCTION(Server, Reliable)
+	void ServerSetAiming(bool bIsAiming);
+
+	// Rep notify
+	UFUNCTION()
+		void OnRep_EquippedWeapon();
 
 private:
 	class ABlasterCharacter* Character;
 
 	// Replicate for equip weapon animation of client
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
 	class AWeapon* EquippedWeapon;
 
+	UPROPERTY(Replicated)
+	bool bAiming;
 public:
 
 		
