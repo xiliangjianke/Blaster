@@ -29,6 +29,8 @@ protected:
 	void CrouchButtonPressed();
 	void AimButtonPressed();
 	void AimButtonReleased();
+	// Calculate AO_Yaw and AO_Pitch for animation blueprint
+	void AimOffset(float DeltaTime);
 
 private:
 	// Add spring arm and camera
@@ -50,11 +52,16 @@ private:
 	void OnRep_OverlappingWeapon(AWeapon* LastWeapon);
 
 	UPROPERTY(VisibleAnywhere)
-		class UCombatComponent* Combat;
+	class UCombatComponent* Combat;
 
 	// Equip RPC
 	UFUNCTION(Server, Reliable)
-		void ServerEquipButtonPressed();
+	void ServerEquipButtonPressed();
+
+	float AO_Yaw;
+	float AO_Pitch;
+	FRotator StartingAimRotation;
+
 public:	
 	// Interact with overlapped weapon
 	void SetOverlappingWeapon(AWeapon* Weapon);
@@ -65,4 +72,7 @@ public:
 	// Check if is aiming for animation blueprints
 	bool IsAiming();
 	
+	FORCEINLINE float GetAO_Yaw() const{ return AO_Yaw; }
+	FORCEINLINE float GetAO_Pitch() const { return AO_Pitch; }
+	AWeapon* GetEquippedWeapon();
 };
