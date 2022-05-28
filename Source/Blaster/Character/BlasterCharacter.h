@@ -32,6 +32,7 @@ protected:
 	void AimButtonReleased();
 	// Calculate AO_Yaw and AO_Pitch for animation blueprint
 	void AimOffset(float DeltaTime);
+	virtual void Jump() override;
 
 private:
 	// Add spring arm and camera
