@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Weapon.generated.h"
 
-// Weapon enum class
 UENUM(BlueprintType)
 enum class EWeaponState : uint8
 {
@@ -14,7 +13,7 @@ enum class EWeaponState : uint8
 	EWS_Equipped UMETA(DisplayName = "Equipped"),
 	EWS_Dropped UMETA(DisplayName = "Dropped"),
 
-	EWS_MAX UMETA(DisplayName = "DefaultMAx")
+	EWS_MAX UMETA(DisplayName = "DefaultMAX")
 };
 
 UCLASS()
@@ -28,13 +27,12 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 	void ShowPickupWidget(bool bShowWidget);
 	virtual void Fire(const FVector& HitTarget);
-
 protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
 	virtual void OnSphereOverlap(
-		UPrimitiveComponent* OverlappedComponnet,
+		UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex,
@@ -43,13 +41,12 @@ protected:
 	);
 
 	UFUNCTION()
-	virtual void OnSphereEndOverlap(
-			UPrimitiveComponent* OverlappedComponnet,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex
-		);
-
+	void OnSphereEndOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex
+	);
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
@@ -69,8 +66,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	class UAnimationAsset* FireAnimation;
-
-
 public:	
 	void SetWeaponState(EWeaponState State);
 	FORCEINLINE USphereComponent* GetAreaSphere() const { return AreaSphere; }

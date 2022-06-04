@@ -8,7 +8,6 @@
 
 #define TRACE_LENGTH 80000.f
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BLASTER_API UCombatComponent : public UActorComponent
 {
@@ -21,21 +20,18 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	void EquipWeapon(class AWeapon* WeaponToEquip);
-protected:	
+protected:
 	virtual void BeginPlay() override;
 	void SetAiming(bool bIsAiming);
 
-	// Aiming RPC
 	UFUNCTION(Server, Reliable)
 	void ServerSetAiming(bool bIsAiming);
 
-	// Rep notify
 	UFUNCTION()
-		void OnRep_EquippedWeapon();
+	void OnRep_EquippedWeapon();
 
 	void FireButtonPressed(bool bPressed);
 
-	// Fire RPC
 	UFUNCTION(Server, Reliable)
 	void ServerFire(const FVector_NetQuantize& TraceHitTarget);
 
@@ -47,14 +43,12 @@ protected:
 private:
 	class ABlasterCharacter* Character;
 
-	// Replicate for equip weapon animation of client
 	UPROPERTY(ReplicatedUsing = OnRep_EquippedWeapon)
-	class AWeapon* EquippedWeapon;
+	AWeapon* EquippedWeapon;
 
 	UPROPERTY(Replicated)
 	bool bAiming;
 
-	// Change speed while aiming
 	UPROPERTY(EditAnywhere)
 	float BaseWalkSpeed;
 
@@ -63,7 +57,6 @@ private:
 
 	bool bFireButtonPressed;
 
-public:
-
+public:	
 		
 };
