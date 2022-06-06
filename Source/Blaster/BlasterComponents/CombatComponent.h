@@ -40,7 +40,7 @@ protected:
 
 	void TraceUnderCrosshairs(FHitResult& TraceHitResult);
 
-	//void SetHUDCrosshairs(float DeltaTime);
+	void SetHUDCrosshairs(float DeltaTime);
 
 private:
 	class ABlasterCharacter* Character;
